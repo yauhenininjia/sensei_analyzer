@@ -9,8 +9,8 @@ class BsuirFinder < ActiveRecord::Base
   def self.find_group_id(number)
     group_id = nil
     groups = Nokogiri::XML(open GROUPS_URL)
-    groups.xpath('//studentGroup').find { |group| group.xpath('name').text == number }
-      .xpath('id').text
+    group = groups.xpath('//studentGroup').find { |group| group.xpath('name').text == number }
+    group.xpath('id').text if group
   end
 
   def self.parse_teacher(employee)
@@ -46,7 +46,8 @@ class BsuirFinder < ActiveRecord::Base
       times = page.xpath("//div[@class='rounded-inside']/div/div[@class='submitted']/span[@class='comment-date']")
       comments = page.xpath("//div[@class='rounded-inside']/div/div[@class='content']/p")
       times.each_with_index do |time, index|
-        teacher_comments << { time: time.text, text: comments[index].text }
+        teacher_comments << Opinion.new(teacher: "#{teacher[:last_name]} #{teacher[:first_name]} #{teacher[:middle_name]}",
+          time: time.text, text: comments[index].text) #{ time: time.text, text: comments[index].text }
       end
     end
     teacher_comments

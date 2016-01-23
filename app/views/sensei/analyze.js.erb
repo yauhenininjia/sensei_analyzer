@@ -1,0 +1,3 @@
+$('div.alert-warning').text('<%= flash[:alert] %>');
+var html = '<%= escape_javascript(render @opinions.flatten) %>';
+$('div#opinions').html(html);

@@ -1,0 +1,5 @@
+<%= form_tag sensei_analyze_path, remote: true do %>
+	<%= text_field_tag 'group_number', nil, maxlength: 6, placeholder: 'Group number', class: 'numeric' %>
+	<%= submit_tag 'Get it!' %>
+<% end %>
+<div id='opinions'></div>
